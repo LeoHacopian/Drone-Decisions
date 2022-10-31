@@ -39,7 +39,7 @@ export async function run({ assetPaths, input = {}, environment, title, version 
   });
 
   let buttons = ['<button class="jspsych-btn"><img src="assets/imgs/no_drone.jpg"></img></button>',
-                 '<button class="jspsych-btn"><img src="assets/imgs/drone.jpg"></img></button>']
+                 '<button class="jspsych-btn"><img src="assets/imgs/drone_attack.jpg"></img></button>']
   // Switch to fullscreen
   timeline.push({
     type: HtmlButtonResponsePlugin,
