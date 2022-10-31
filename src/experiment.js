@@ -40,11 +40,17 @@ export async function run({ assetPaths, input = {}, environment, title, version 
 
   let buttons = ['<button class="jspsych-btn"><img src="assets/imgs/no_drone.jpg"></img></button>',
                  '<button class="jspsych-btn"><img src="assets/imgs/drone_attack.jpg"></img></button>']
-  // Switch to fullscreen
+
+  let size = ['small', 'medium-sized', 'large'];
+  let sizeRelation = ['allied', 'neutral', 'rival'];
+  let region = ['North America', 'South America', 'Europe', 'Africa', 'Central Asia', 'East Asia', 'Middle East'];
+  let confidence = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95];
+  let bystanders = Math.floor(Math.random() * 10);
+  //
   timeline.push({
     type: HtmlButtonResponsePlugin,
     stimulus: `<div><img src="assets/imgs/drone.jpg"></img></div>
-    <p>Kill terrorist?</p>
+    <p>Your target is located in a ${size[Math.floor(Math.random()*size.length)]} ${sizeRelation[Math.floor(Math.random()*sizeRelation.length)]} country in ${region[Math.floor(Math.random()*region.length)]}. There are ${bystanders} bystanders in the area and you are ${confidence[Math.floor(Math.random()*confidence.length)]}% confident that you have identified the correct target.</p>
     `,
     button_html: buttons,
     choices: ['Yes', 'No'],
