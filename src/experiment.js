@@ -22,11 +22,11 @@ const SIZE = ["small", "medium-sized", "large"]
 const RELATION = ["allied", "neutral", "rival"]
 const REGION = ["North America", "South America", "Europe", "Africa", "Central Asia", "East Asia", "the Middle East"]
 const CONFIDENCE = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95]
-const BYSTANDERS = [0, 9]
+const BYSTANDERS = [0, 10]
 
 
 function randomRange(min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
 
@@ -61,15 +61,14 @@ export async function run({ assetPaths, input = {}, environment, title, version 
 
   const drone = {
     type: HtmlButtonResponsePlugin,
-    stimulus:
-        function (){
+    stimulus: () => {
           const text =`
             <div><img src='${jsPsych.timelineVariable('stimulus')}'></img></div>
-            <p>Your target is located in a ${size[Math.floor(Math.random()*size.length)]} 
-                ${sizeRelation[Math.floor(Math.random()*sizeRelation.length)]} country in 
-                ${region[Math.floor(Math.random()*region.length)]}. There are 
-                ${bystanders} bystanders in the area and you are 
-                ${confidence[Math.floor(Math.random()*confidence.length)]}% confident that you have identified the correct target.</p>
+            <p>Your target is located in a ${SIZE[randomRange(0, SIZE.length)]} 
+                ${RELATION[randomRange(0, RELATION.length)]} country in 
+                ${REGION[randomRange(0, REGION.length)]}. There are 
+                ${randomRange(BYSTANDERS[0], BYSTANDERS[1])} bystanders in the area and you are 
+                ${CONFIDENCE[randomRange(0, CONFIDENCE.length)]}% confident that you have identified the correct target.</p>
             `
           return text
         }
@@ -78,14 +77,13 @@ export async function run({ assetPaths, input = {}, environment, title, version 
     choices: ['Yes', 'No'],
   };
 
-  const node = {
+  timeline.push({
     timeline: [drone],
     timeline_variables: test_stimuli,
     randomize_order: true,
     repetitions: 5
-  };
+  })
 
-  timeline.push(node);
 
 
   await jsPsych.run(timeline);
