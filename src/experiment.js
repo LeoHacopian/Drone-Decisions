@@ -25,6 +25,11 @@ const CONFIDENCE = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 8
 const BYSTANDERS = [0, 9]
 
 
+function randomRange(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+
 /**
  * This function will be executed by jsPsych Builder and is expected to run the jsPsych experiment
  *
@@ -44,30 +49,15 @@ export async function run({ assetPaths, input = {}, environment, title, version 
     {stimulus: "assets/maps/ph6.png"}
   ]
 
+  const buttons = ['<button class="jspsych-btn"><img src="assets/imgs/no_drone.jpg"></img></button>',
+                 '<button class="jspsych-btn"><img src="assets/imgs/drone_attack.jpg"></img></button>']
+
 
   // Preload assets
   timeline.push({
     type: PreloadPlugin,
     images: assetPaths.images
   });
-
-  // Welcome screen
-  // timeline.push({
-  //   type: HtmlKeyboardResponsePlugin,
-  //   stimulus: "<p>Welcome to Drone Decisions!<p/>",
-  // });
-
-  let buttons = ['<button class="jspsych-btn"><img src="assets/imgs/no_drone.jpg"></img></button>',
-                 '<button class="jspsych-btn"><img src="assets/imgs/drone_attack.jpg"></img></button>']
-
-  let size = ['small', 'medium-sized', 'large'];
-  let sizeRelation = ['allied', 'neutral', 'rival'];
-  let region = ['North America', 'South America', 'Europe', 'Africa', 'Central Asia', 'East Asia', 'Middle East'];
-  let confidence = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95];
-  let bystanders = Math.floor(Math.random() * 10);
-  let regionMap = ["assets/maps/ph1.png", "assets/maps/ph2.png", "assets/maps/ph3.png", "assets/maps/ph4.png", "assets/maps/ph5.png", "assets/maps/ph6.png"]
-
-  console.log(jsPsych.timelineVariable("stimulus"))
 
   const drone = {
     type: HtmlButtonResponsePlugin,
