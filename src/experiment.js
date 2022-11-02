@@ -16,14 +16,23 @@ import HtmlButtonResponse from "@jspsych/plugin-html-button-response";
 import { initJsPsych } from "jspsych";
 import HtmlButtonResponsePlugin from "@jspsych/plugin-html-button-response";
 
+
+// VARIABLES
+const SIZE = ["small", "medium-sized", "large"]
+const RELATION = ["allied", "neutral", "rival"]
+const REGION = ["North America", "South America", "Europe", "Africa", "Central Asia", "East Asia", "the Middle East"]
+const CONFIDENCE = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95]
+const BYSTANDERS = [0, 9]
+
+
 /**
  * This function will be executed by jsPsych Builder and is expected to run the jsPsych experiment
  *
  * @type {import("jspsych-builder").RunFunction}
  */
 export async function run({ assetPaths, input = {}, environment, title, version }) {
-  const jsPsych = initJsPsych();
 
+  const jsPsych = initJsPsych();
   const timeline = [];
 
   const test_stimuli = [

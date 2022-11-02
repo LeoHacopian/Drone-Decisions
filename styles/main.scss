@@ -5,7 +5,15 @@
 }
 
 .jspsych-btn {
-  width: 250px;
-  height: 250px;
+  box-sizing: border-box;
+  width: 330px;
   padding: 0px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.map-image {
+
 }
