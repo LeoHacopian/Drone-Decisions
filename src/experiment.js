@@ -49,8 +49,8 @@ export async function run({ assetPaths, input = {}, environment, title, version 
     {stimulus: "assets/maps/ph6.png"}
   ]
 
-  const buttons = ['<button class="jspsych-btn"><img src="assets/imgs/no_drone.jpg"></img></button>',
-                 '<button class="jspsych-btn"><img src="assets/imgs/drone_attack.jpg"></img></button>']
+  const buttons = ['<button class="jspsych-btn"><img src="assets/imgs/no_drone_small.png"></img></button>',
+                 '<button class="jspsych-btn"><img src="assets/imgs/drone_attack_small.png"></img></button>']
 
 
   // Preload assets

@@ -6,12 +6,17 @@
 
 .jspsych-btn {
   box-sizing: border-box;
-  width: 330px;
-  padding: 0px;
+  width: 350px;
+  height: 93px;
+  // padding: 15px;
 
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.jspsych-btn img {
+  align-self: center;
 }
 
 .map-image {
