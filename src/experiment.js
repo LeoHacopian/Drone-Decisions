@@ -37,7 +37,13 @@ function randomRange(min, max) {
  */
 export async function run({ assetPaths, input = {}, environment, title, version }) {
 
-  const jsPsych = initJsPsych();
+  const jsPsych = initJsPsych({
+    on_finish: function() {
+      jsPsych.data.displayData()
+    }
+  });
+
+  
   const timeline = [];
 
   const test_stimuli = [
@@ -80,8 +86,24 @@ export async function run({ assetPaths, input = {}, environment, title, version 
   timeline.push({
     timeline: [drone],
     timeline_variables: test_stimuli,
-    randomize_order: true,
-    repetitions: 5
+    repetitions: 2,
+
+    // Custom function to randomize the order of images
+    sample: {
+      type: 'custom',
+      fn: function(arr) {
+        const size = arr.length
+
+        const result = []
+        for (let i = 0; i < size; i++) {
+          const num = randomRange(0, size)
+          result.push(num)
+        }
+
+        // console.log(result)
+        return result
+      }
+    }
   })
 
 
