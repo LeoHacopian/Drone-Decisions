@@ -86,7 +86,7 @@ export async function run({ assetPaths, input = {}, environment, title, version 
   timeline.push({
     timeline: [drone],
     timeline_variables: test_stimuli,
-    repetitions: 2,
+    repetitions: 1,
 
     // Custom function to randomize the order of images
     sample: {
@@ -104,6 +104,10 @@ export async function run({ assetPaths, input = {}, environment, title, version 
         return result
       }
     }
+    // sample: {
+    //   type: 'with-replacement',
+    //   size: 3
+    // }
   })
 
 
