@@ -104,10 +104,6 @@ export async function run({ assetPaths, input = {}, environment, title, version 
         return result
       }
     }
-    // sample: {
-    //   type: 'with-replacement',
-    //   size: 3
-    // }
   })
 
 
