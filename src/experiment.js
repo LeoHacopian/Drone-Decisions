@@ -109,6 +109,7 @@ export async function run({ assetPaths, input = {}, environment, title, version 
     choices: ['Yes', 'No'],
   };
 
+
   timeline.push({
     timeline: [drone],
     timeline_variables: test_stimuli,
@@ -117,21 +118,24 @@ export async function run({ assetPaths, input = {}, environment, title, version 
     sample: {
       type: 'custom',
       size: 7,
-      fn: function(arr) {
-        const len = arr.length
-
-        const result = []
-        for (let i = 0; i < this.size; i++) {
-          const num = randomRange(0, len)
-          result.push(num)
-        }
-
-        // console.log(result)
-        return result
-      }
+      fn: function(arr) { return randomizeStimuli(arr.length, this.size) }
     }
   })
 
+  /**
+   * 
+   * @param {int} range Size of the stimuli array
+   * @param {int} repitions Number of times stimuli should be shown
+   * @returns Array containing order of indexes of stimuli
+   */
+  function randomizeStimuli(range, repitions) {
+    const result = []
+    for (let i = 0; i < repitions; i++) {
+      const num = randomRange(0, range)
+      result.push(num)
+    }
+    return result
+  }
 
 
   await jsPsych.run(timeline);
