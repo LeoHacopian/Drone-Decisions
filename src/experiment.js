@@ -104,14 +104,21 @@ export async function run({ assetPaths, input = {}, environment, title, version 
     images: assetPaths.images
   });
 
+  // Instructions
+  // timeline.push({
+  //   type: HtmlKeyboardResponsePlugin,
+  //   stimulus: ``
+  // })
+
   // Main Drone Trial
   const drone = {
     type: HtmlButtonResponsePlugin,
     stimulus: () => {
           const text =`
             <div id="trial-container" class="droneTrial">
+              <h1 id="title">TECHOMETER</h1>
               <div><img id="map-img" src='${jsPsych.timelineVariable('stimulus')}'></img></div>
-              <p>Your target is located in a ${jsPsych.timelineVariable('size')} 
+              <p id="question-text">Your target is located in a ${jsPsych.timelineVariable('size')} 
                   ${RELATION[randomRange(0, RELATION.length)]} country in 
                   ${REGION[randomRange(0, REGION.length)]}. There are 
                   ${jsPsych.timelineVariable('bystanders')} bystanders in the area and you are 
