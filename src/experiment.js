@@ -109,13 +109,15 @@ export async function run({ assetPaths, input = {}, environment, title, version 
     type: HtmlButtonResponsePlugin,
     stimulus: () => {
           const text =`
-            <div><img id="map-img" src='${jsPsych.timelineVariable('stimulus')}'></img></div>
-            <p>Your target is located in a ${jsPsych.timelineVariable('size')} 
-                ${RELATION[randomRange(0, RELATION.length)]} country in 
-                ${REGION[randomRange(0, REGION.length)]}. There are 
-                ${jsPsych.timelineVariable('bystanders')} bystanders in the area and you are 
-                ${CONFIDENCE[randomRange(0, CONFIDENCE.length)]}% confident that you have identified the correct target.</p>
-            `
+            <div id="trial-container" class="droneTrial">
+              <div><img id="map-img" src='${jsPsych.timelineVariable('stimulus')}'></img></div>
+              <p>Your target is located in a ${jsPsych.timelineVariable('size')} 
+                  ${RELATION[randomRange(0, RELATION.length)]} country in 
+                  ${REGION[randomRange(0, REGION.length)]}. There are 
+                  ${jsPsych.timelineVariable('bystanders')} bystanders in the area and you are 
+                  ${CONFIDENCE[randomRange(0, CONFIDENCE.length)]}% confident that you have identified the correct target.</p>
+            </div>
+          `
           return text
         }
 ,

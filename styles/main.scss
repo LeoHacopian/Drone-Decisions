@@ -1,7 +1,7 @@
 @import "~jspsych/css/jspsych.css";
 
 .jspsych-display-element {
-  background-color: #ffffff;
+  background-color: #61a8f8;
 }
 
 .jspsych-btn {
@@ -17,6 +17,23 @@
 
 .jspsych-btn img {
   align-self: center;
+}
+
+#trial-container {
+
+}
+
+.droneTrial {
+  width: 1500px;
+  min-height: 680px;
+
+  margin-bottom: 10px;
+  padding: 10px;
+  padding-top: 30px;
+  
+  background-color: rgb(191, 215, 231);
+  border: solid black 2px;
+  border-radius: 5px;
 }
 
 #map-img {
