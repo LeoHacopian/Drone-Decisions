@@ -210,6 +210,7 @@ export async function run({
       <div><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size:16px;"><span style="color:#000000;"><strong>VOLUNTARY PARTICIPATION STATEMENT</strong></span></span></span></div>
       <div><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size:16px;"><span style="color:#000000;">You should not sign this form unless you have read and understood it. Participation in this study is voluntary.&nbsp; You may refuse to answer any question or discontinue your involvement at any time without penalty or loss of benefits to which you might otherwise be entitled.&nbsp; Your decision will not affect your relationship with California State University, Northridge.&nbsp; </span></span></span></div></div><div class="QuestionBody"></div>  </div> </div>
     </div>
+    <legend> <div class="QuestionText BorderColor" style="text-align: left; padding: 30px 0px"><span style="font-family:arial,helvetica,sans-serif;"><span style="color:#000000;"><span style="font-size:16px;">I have read the above information and hereby consent to participate in this study.</span></span></span></div></legend>
     `,
 
     button_html: consentButton,
