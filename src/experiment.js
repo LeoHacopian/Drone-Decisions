@@ -18,11 +18,11 @@ import HtmlButtonResponsePlugin from "@jspsych/plugin-html-button-response";
 
 
 // VARIABLES
-const SIZE = ["small", "medium-sized", "large"]
 const RELATION = ["allied", "neutral", "rival"]
 const REGION = ["North America", "South America", "Europe", "Africa", "Central Asia", "East Asia", "the Middle East"]
 const CONFIDENCE = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95]
-const BYSTANDERS = [0, 10]
+// const SIZE = ["small", "medium-sized", "large"]
+// const BYSTANDERS = [0, 10]
 
 
 function randomRange(min, max) {
@@ -42,17 +42,43 @@ export async function run({ assetPaths, input = {}, environment, title, version 
       jsPsych.data.displayData()
     }
   });
-
   
   const timeline = [];
 
+
+  let rand
   const test_stimuli = [
-    {stimulus: "assets/maps/ph1.png"},
-    {stimulus: "assets/maps/ph2.png"},
-    {stimulus: "assets/maps/ph3.png"},
-    {stimulus: "assets/maps/ph4.png"},
-    {stimulus: "assets/maps/ph5.png"},
-    {stimulus: "assets/maps/ph6.png"}
+    {
+      // TODO: Add zero bystander images
+      stimulus: `assets/maps/Big City A/BCA ${rand = randomRange(0,11)}@4x.png`, 
+      size: "large",
+      bystanders: rand,
+    },
+    {
+      stimulus: `assets/maps/Big City B/BCB ${rand = randomRange(0,11)}@4x.png`, 
+      size: "large",
+      bystanders: rand,
+    },
+    {
+      stimulus: `assets/maps/Small City A/SCA ${rand = randomRange(0,11)}@4x.png`, 
+      size: "small",
+      bystanders: rand,
+    },
+    {
+      stimulus: `assets/maps/Small City B/SCB ${rand = randomRange(0,11)}@4x.png`, 
+      size: "small",
+      bystanders: rand,
+    },
+    {
+      stimulus: `assets/maps/Topo A/Topo A ${rand = randomRange(0,11)}@4x.png`, 
+      size: "medium-sized",
+      bystanders: rand,
+    },
+    {
+      stimulus: `assets/maps/Topo B/Topo B ${rand = randomRange(0,11)}@4x.png`, 
+      size: "medium-sized",
+      bystanders: rand,
+    },
   ]
 
   const buttons = ['<button class="jspsych-btn"><img src="assets/imgs/no_drone_small.png"></img></button>',
@@ -69,11 +95,11 @@ export async function run({ assetPaths, input = {}, environment, title, version 
     type: HtmlButtonResponsePlugin,
     stimulus: () => {
           const text =`
-            <div><img src='${jsPsych.timelineVariable('stimulus')}'></img></div>
-            <p>Your target is located in a ${SIZE[randomRange(0, SIZE.length)]} 
+            <div><img id="map-img" src='${jsPsych.timelineVariable('stimulus')}'></img></div>
+            <p>Your target is located in a ${jsPsych.timelineVariable('size')} 
                 ${RELATION[randomRange(0, RELATION.length)]} country in 
                 ${REGION[randomRange(0, REGION.length)]}. There are 
-                ${randomRange(BYSTANDERS[0], BYSTANDERS[1])} bystanders in the area and you are 
+                ${jsPsych.timelineVariable('bystanders')} bystanders in the area and you are 
                 ${CONFIDENCE[randomRange(0, CONFIDENCE.length)]}% confident that you have identified the correct target.</p>
             `
           return text
@@ -86,17 +112,17 @@ export async function run({ assetPaths, input = {}, environment, title, version 
   timeline.push({
     timeline: [drone],
     timeline_variables: test_stimuli,
-    repetitions: 1,
 
     // Custom function to randomize the order of images
     sample: {
       type: 'custom',
+      size: 7,
       fn: function(arr) {
-        const size = arr.length
+        const len = arr.length
 
         const result = []
-        for (let i = 0; i < size; i++) {
-          const num = randomRange(0, size)
+        for (let i = 0; i < this.size; i++) {
+          const num = randomRange(0, len)
           result.push(num)
         }
 
