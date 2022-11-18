@@ -24,6 +24,14 @@ const CONFIDENCE = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 8
 // const BYSTANDERS = [0, 10]
 
 
+/* GLOBAL FUNCTIONS */
+
+/**
+ * 
+ * @param {int} min Minimum value for range (inclusive)
+ * @param {int} max Maximum value for range (exclusive)
+ * @returns Random integer value
+ */
 function randomRange(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
