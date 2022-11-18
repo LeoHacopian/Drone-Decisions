@@ -1,5 +1,16 @@
 @import "~jspsych/css/jspsych.css";
 
+:root {
+  --borderRadius: 8px;
+}
+
+#jspsych-content {
+  background-color: rgb(255 , 255, 255);
+  border-radius: var(--borderRadius);
+  padding: 20px 20px 20px 20px;
+
+}
+
 .jspsych-display-element {
   background-color: rgb(202, 207, 233);
 }
@@ -8,11 +19,19 @@
   box-sizing: border-box;
   width: 350px;
   height: 93px;
-  // padding: 15px;
 
   display: flex;
   flex-direction: row;
   justify-content: center;
+
+  border-radius: var(--borderRadius);
+  border: 0px;
+  background-color: rgb(240, 240, 240);
+}
+
+.jspsych-btn:active {
+  background-color: rgb(240, 112, 20);
+  border: solid 2px;
 }
 
 .jspsych-btn img {
@@ -29,10 +48,10 @@
   // min-height: 680px;
 
   margin-bottom: 10px;
-  padding: 20px 20px;
+  padding-bottom: 20px;
   
-  background-color: rgb(255 , 255, 255);
-  border-radius: 5px;
+  // background-color: rgb(255 , 255, 255);
+  // border-radius: var(--borderRadius);
 }
 
 #title {
@@ -40,6 +59,7 @@
   padding: 20px 0px;
 
   display: block;
+  border-radius: 5px;
 
   color: white;
   background-color: #c5c2cb;
