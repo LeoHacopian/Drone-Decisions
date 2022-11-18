@@ -4,18 +4,25 @@
   --borderRadius: 8px;
 }
 
-#jspsych-content {
-  background-color: rgb(255 , 255, 255);
-  border-radius: var(--borderRadius);
-  padding: 20px 20px 20px 20px;
-
-}
-
 .jspsych-display-element {
   background-color: rgb(202, 207, 233);
 }
 
-.jspsych-btn {
+#jspsych-content {
+  background-color: rgb(255 , 255, 255);
+  border-radius: var(--borderRadius);
+  padding: 20px 20px 20px 20px;
+  margin: 40px 85.5px;
+}
+
+
+.trialButton {
+  border-radius: var(--borderRadius);
+  border: 0px;
+  background-color: rgb(240, 240, 240);
+}
+
+.gameButton {
   box-sizing: border-box;
   width: 350px;
   height: 93px;
@@ -23,20 +30,27 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-
-  border-radius: var(--borderRadius);
-  border: 0px;
-  background-color: rgb(240, 240, 240);
 }
 
-.jspsych-btn:active {
+.gameButton:active {
   background-color: rgb(240, 112, 20);
   border: solid 2px;
 }
 
-.jspsych-btn img {
+.gameButton img {
   align-self: center;
 }
+
+#consentButton p {
+  display: block;
+  padding: 0px 50px;
+  font-size: 16px;
+}
+
+#consentButton:active {
+  background-color: rgb(240, 112, 20);
+}
+
 
 #trial-container {
   --box-width: 730px;
@@ -44,14 +58,8 @@
 }
 
 .droneTrial {
-  // width: 1500px;
-  // min-height: 680px;
-
   margin-bottom: 10px;
   padding-bottom: 20px;
-  
-  // background-color: rgb(255 , 255, 255);
-  // border-radius: var(--borderRadius);
 }
 
 #title {
