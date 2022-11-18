@@ -9,10 +9,9 @@
 // You can import stylesheets (.scss or .css).
 import "../styles/main.scss";
 
-import FullscreenPlugin from "@jspsych/plugin-fullscreen";
 import HtmlKeyboardResponsePlugin from "@jspsych/plugin-html-keyboard-response";
-import PreloadPlugin from "@jspsych/plugin-preload";
 import HtmlButtonResponse from "@jspsych/plugin-html-button-response";
+import PreloadPlugin from "@jspsych/plugin-preload";
 import { initJsPsych } from "jspsych";
 import HtmlButtonResponsePlugin from "@jspsych/plugin-html-button-response";
 
@@ -37,19 +36,24 @@ function randomRange(min, max) {
  */
 export async function run({ assetPaths, input = {}, environment, title, version }) {
 
+  // Initialize jsPsych variable
   const jsPsych = initJsPsych({
+
+    // Function to be called when experiment finishes
     on_finish: function() {
       jsPsych.data.displayData()
     }
   });
   
+  // Array storing order of trials
   const timeline = [];
 
 
+  // Environment Variables
   let rand
-  const test_stimuli = [
+  const env_vars = [
+    // TODO: Add zero bystander images
     {
-      // TODO: Add zero bystander images
       stimulus: `assets/maps/Big City A/BCA ${rand = randomRange(0,11)}@4x.png`, 
       size: "large",
       bystanders: rand,
@@ -81,6 +85,7 @@ export async function run({ assetPaths, input = {}, environment, title, version 
     },
   ]
 
+  // Assets for attack and don't-attack buttons
   const buttons = ['<button class="jspsych-btn"><img src="assets/imgs/no_drone_small.png"></img></button>',
                  '<button class="jspsych-btn"><img src="assets/imgs/drone_attack_small.png"></img></button>']
 
@@ -91,6 +96,7 @@ export async function run({ assetPaths, input = {}, environment, title, version 
     images: assetPaths.images
   });
 
+  // Main Drone Trial
   const drone = {
     type: HtmlButtonResponsePlugin,
     stimulus: () => {
@@ -110,9 +116,10 @@ export async function run({ assetPaths, input = {}, environment, title, version 
   };
 
 
+  // Push Trials, set timeline variables, and set sampling function
   timeline.push({
     timeline: [drone],
-    timeline_variables: test_stimuli,
+    timeline_variables: env_vars,
 
     // Custom function to randomize the order of images
     sample: {
@@ -138,6 +145,7 @@ export async function run({ assetPaths, input = {}, environment, title, version 
   }
 
 
+  // Run experiment
   await jsPsych.run(timeline);
 
   // Return the jsPsych instance so jsPsych Builder can access the experiment results (remove this
