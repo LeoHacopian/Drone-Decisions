@@ -33,7 +33,6 @@ const MAP_TYPES = [
   "City A/BCA", "City B/BCB", "City A/SCA", "City B/SCB", "A/Medium-Sized B", "A/Medium-Sized B"
 ]
 const SIZE = ["small", "medium-sized", "large"]
-// const BYSTANDERS = [0, 10]
 
 /* GLOBAL FUNCTIONS */
 
@@ -107,7 +106,7 @@ export async function run({
       bystanders: rand,
     },
     {
-      stimulus: `assets/maps/Topo A/Topo A ${(rand = randomRange(
+      stimulus: `assets/maps/Medium-Sized A/Medium-Sized A ${(rand = randomRange(
         0,
         11
       ))}@4x.png`,
@@ -115,7 +114,7 @@ export async function run({
       bystanders: rand,
     },
     {
-      stimulus: `assets/maps/Topo B/Topo B ${(rand = randomRange(
+      stimulus: `assets/maps/Medium-Sized B/Medium-Sized B ${(rand = randomRange(
         0,
         11
       ))}@4x.png`,
@@ -260,6 +259,7 @@ export async function run({
       type: "custom",
       size: 7,
       fn: function (arr) {
+        console.log(env_vars)
         return randomizeStimuli(arr.length, this.size);
       },
     },
