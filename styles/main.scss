@@ -4,6 +4,11 @@
   --borderRadius: 8px;
 }
 
+.jspsych-content-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .jspsych-display-element {
   background-color: rgb(202, 207, 233);
 }
@@ -20,6 +25,10 @@
   border-radius: var(--borderRadius);
   border: 0px;
   background-color: rgb(240, 240, 240);
+}
+
+.trialButton:hover {
+  cursor: pointer;
 }
 
 .gameButton {
