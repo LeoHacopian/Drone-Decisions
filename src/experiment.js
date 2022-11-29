@@ -72,54 +72,53 @@ export async function run({
   // Environment Variables
   let rand;
   const env_vars = [
-    // TODO: Add zero bystander images
     {
       stimulus: `assets/maps/Big City A/BCA ${(rand = randomRange(
-        0,
+        1,
         11
       ))}@4x.png`,
       size: "large",
-      bystanders: rand,
+      bystanders: rand - 1,
     },
     {
       stimulus: `assets/maps/Big City B/BCB ${(rand = randomRange(
-        0,
+        1,
         11
       ))}@4x.png`,
       size: "large",
-      bystanders: rand,
+      bystanders: rand - 1,
     },
     {
       stimulus: `assets/maps/Small City A/SCA ${(rand = randomRange(
-        0,
+        1,
         11
       ))}@4x.png`,
       size: "small",
-      bystanders: rand,
+      bystanders: rand - 1,
     },
     {
       stimulus: `assets/maps/Small City B/SCB ${(rand = randomRange(
-        0,
+        1,
         11
       ))}@4x.png`,
       size: "small",
-      bystanders: rand,
+      bystanders: rand - 1,
     },
     {
       stimulus: `assets/maps/Medium-Sized A/Medium-Sized A ${(rand = randomRange(
-        0,
+        1,
         11
       ))}@4x.png`,
       size: "medium-sized",
-      bystanders: rand,
+      bystanders: rand - 1,
     },
     {
       stimulus: `assets/maps/Medium-Sized B/Medium-Sized B ${(rand = randomRange(
-        0,
+        1,
         11
       ))}@4x.png`,
       size: "medium-sized",
-      bystanders: rand,
+      bystanders: rand - 1,
     },
   ];
 
