@@ -60,6 +60,8 @@ export async function run({
 }) {
   // Initialize jsPsych variable
   const jsPsych = initJsPsych({
+    // display_element: "target-display",
+
     // Function to be called when experiment finishes
     on_finish: function () {
       jsPsych.data.displayData();
@@ -68,6 +70,12 @@ export async function run({
 
   // Array storing order of trials
   const timeline = [];
+
+  // Preload assets
+  timeline.push({
+    type: PreloadPlugin,
+    images: assetPaths.images,
+  });
 
   // Environment Variables
   let rand;
@@ -121,12 +129,6 @@ export async function run({
       bystanders: rand - 1,
     },
   ];
-
-  // Preload assets
-  timeline.push({
-    type: PreloadPlugin,
-    images: assetPaths.images,
-  });
 
   // HTML Variables
   const titleHtml = `<h1 id="title">TECHOMETER</h1>`;
