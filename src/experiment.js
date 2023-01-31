@@ -14,6 +14,7 @@ import HtmlButtonResponse from "@jspsych/plugin-html-button-response";
 import PreloadPlugin from "@jspsych/plugin-preload";
 import { initJsPsych } from "jspsych";
 import HtmlButtonResponsePlugin from "@jspsych/plugin-html-button-response";
+import axios from "axios";
 
 // VARIABLES
 const RELATION = ["allied", "neutral", "rival"];
@@ -63,8 +64,19 @@ export async function run({
     // display_element: "target-display",
 
     // Function to be called when experiment finishes
-    on_finish: function () {
+    on_finish: async function () {
+      const data = jsPsych.data.get()
+      data.trials.shift()
+      data.trials.shift()
+
       jsPsych.data.displayData();
+      const jsonData = jsPsych.data.get().json()
+
+      const headers = {
+        "Content-Type": "application/json"
+      }
+
+      await axios({ url: "http://localhost:3001/test", method: "PUT", data: jsonData, headers})
     },
   });
 
@@ -215,13 +227,15 @@ export async function run({
     </div>
     <legend> <div class="QuestionText BorderColor" style="text-align: left; padding: 30px 0px"><span style="font-family:arial,helvetica,sans-serif;"><span style="color:#000000;"><span style="font-size:16px;">I have read the above information and hereby consent to participate in this study.</span></span></span></div></legend>
     `,
-
     button_html: consentButton,
     choices: ["agree"],
   });
 
   
   // Main Drone Trial
+  let relation = undefined
+  let region = undefined
+  let confidence = undefined
   const drone = {
     type: HtmlButtonResponsePlugin,
     stimulus: () => {
@@ -234,20 +248,34 @@ export async function run({
               <p id="question-text">Your target is located in a ${jsPsych.timelineVariable(
                 "size"
               )} 
-                  ${RELATION[randomRange(0, RELATION.length)]} country in 
-                  ${REGION[randomRange(0, REGION.length)]}. There are 
+                  ${relation = RELATION[randomRange(0, RELATION.length)]} country in 
+                  ${region = REGION[randomRange(0, REGION.length)]}. There are 
                   ${jsPsych.timelineVariable(
                     "bystanders"
                   )} bystanders in the area and you are 
                   ${
-                    CONFIDENCE[randomRange(0, CONFIDENCE.length)]
+                    confidence = CONFIDENCE[randomRange(0, CONFIDENCE.length)]
                   }% confident that you have identified the correct target.</p>
             </div>
           `;
       return text;
     },
+    data: {
+      bystanders: jsPsych.timelineVariable("bystanders"),
+      size: jsPsych.timelineVariable("size"),
+    },
     button_html: gameButtons,
     choices: ["Yes", "No"],
+    on_finish: function (result) {
+      result.response = (result.response === 1 ? "strike" : "no-strike")
+      result.relation = relation
+      result.region = region
+      result.confidence = confidence
+
+      delete result.stimulus
+      delete result.trial_type
+      delete result.internal_node_id
+    }
   };
 
   // Push Trials, set timeline variables, and set sampling function
