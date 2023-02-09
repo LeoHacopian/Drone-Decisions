@@ -152,7 +152,10 @@ export async function run({
   ];
 
   const consentButton = [`<button id="consentButton" class="trialButton"><p>I agree to participate in this study</p></button>`]
-  const nextButton = [`<button id="nextButton" class="trialButton"><p>Next</p></button>`]
+  const navButtons = [
+    `<button id="prevButton" class="trialButton nav-button"><p>%choice%</p></button>`,
+    `<button id="nextButton" class="trialButton nav-button"><p>%choice%</p></button>`, 
+  ]
 
   // Terms and Services
   timeline.push({
@@ -249,10 +252,43 @@ export async function run({
         </p>
       </div>
     `,
-    button_html: nextButton,
-    choices: ["next"]
+    button_html: navButtons,
+    choices: ["Prev", "Next"]
   })
 
+  // Strike Button 
+  timeline.push({
+    type: HtmlButtonResponsePlugin,
+    stimulus: `
+    <div class="instruction-strike">
+      <div class="instruction-img-container">
+          <img src="assets/imgs/drone_attack.png" />
+      </div>
+      <p class="instruction-text">
+        This icon means that the best option is to order a drone strike.
+      </p>
+    </div>
+    `,
+    button_html: navButtons, 
+    choices: ["Prev", "Next"]
+  })
+
+  // Don't Strike Button
+  timeline.push({
+    type: HtmlButtonResponsePlugin,
+    stimulus: `
+    <div class="instruction-no-strike">
+      <div class="instruction-img-container">
+          <img src="assets/imgs/no_drone.png" />
+      </div>
+      <p class="instruction-text">
+        This icon means that the best option is to NOT order a drone strike.
+      </p>
+    </div>
+    `,
+    button_html: navButtons, 
+    choices: ["Prev", "Next"]
+  })
   
   // Main Drone Trial
   let relation = undefined
