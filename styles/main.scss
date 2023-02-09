@@ -7,6 +7,7 @@
 .jspsych-content-wrapper {
   display: flex;
   justify-content: center;
+  font-family: "Helvetica Neue",Arial,sans-serif;
 }
 
 .jspsych-display-element {
@@ -17,7 +18,12 @@
   background-color: rgb(255 , 255, 255);
   border-radius: var(--borderRadius);
   padding: 20px 20px 20px 20px;
-  margin: 40px 85.5px;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+#instructions p {
+  text-align: left;
 }
 
 
@@ -60,6 +66,15 @@
   background-color: rgb(240, 112, 20);
 }
 
+#nextButton p {
+  display: block;
+  padding: 0px 50px;
+  font-size: 16px;
+}
+
+#nextButton:active {
+  background-color: rgb(240, 112, 20);
+}
 
 #trial-container {
   --box-width: 730px;

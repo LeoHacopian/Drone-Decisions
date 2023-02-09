@@ -152,8 +152,9 @@ export async function run({
   ];
 
   const consentButton = [`<button id="consentButton" class="trialButton"><p>I agree to participate in this study</p></button>`]
+  const nextButton = [`<button id="nextButton" class="trialButton"><p>Next</p></button>`]
 
-  // Instructions
+  // Terms and Services
   timeline.push({
     type: HtmlButtonResponsePlugin,
     stimulus: `
@@ -230,6 +231,27 @@ export async function run({
     button_html: consentButton,
     choices: ["agree"],
   });
+
+  // Intrustions 
+  timeline.push({
+    type: HtmlButtonResponsePlugin, 
+    stimulus: `
+      ${titleHtml}
+      <div id="instructions">
+        <p>
+          Imagine that a military leader is trying to eliminate people who have committed acts of terrorism. One way to do this is to order a drone strike on the target's location.
+        </p>
+        <p>
+          Unfortunately, the suspects are typically in locations with other people who are not suspected terrorists, and a drone strike would kill those people also.
+        </p>
+        <p>
+          You will evaluate a variety of scenarios; in each case, your task is to pick the best option (order the strike or decline to do so).
+        </p>
+      </div>
+    `,
+    button_html: nextButton,
+    choices: ["next"]
+  })
 
   
   // Main Drone Trial
