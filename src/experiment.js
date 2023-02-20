@@ -43,17 +43,6 @@ function randomRange(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-function PageNav(data, trialIndex) {
-  if (data.button_pressed === 'Prev') {
-    trialIndex -= 1;
-    if (trialIndex < 0) {
-      trialIndex = 0;
-    }
-  } else {
-    trialIndex += 1;
-  }
-}
-
 function randomizeStimuli(range, repitions) {
   const result = [];
   for (let i = 0; i < repitions; i++) {
@@ -76,13 +65,8 @@ export async function run({
   version,
 }) {
 
-  let trialIndex = 0
-
   // Initialize jsPsych variable
   const jsPsych = initJsPsych({
-    on_trial_start: function () {
-      jsPsych.getCurrentTrial().timeline_index = trialIndex;
-    },
 
     // Function to be called when experiment finishes
     on_finish: async function () {
@@ -199,72 +183,51 @@ export async function run({
     `<button id="nextButton" class="trialButton nav-button"><p>%choice%</p></button>`, 
   ]
 
-  // Instructions 
   timeline.push({
-    type: HtmlButtonResponsePlugin, 
-    stimulus: `
-      ${titleHtml}
-      <div id="instructions">
-        <p>
-          Imagine that a military leader is trying to eliminate people who have committed acts of terrorism. One way to do this is to order a drone strike on the target's location.
-        </p>
-        <p>
-          Unfortunately, the suspects are typically in locations with other people who are not suspected terrorists, and a drone strike would kill those people also.
-        </p>
-        <p>
-          You will evaluate a variety of scenarios; in each case, your task is to pick the best option (order the strike or decline to do so).
-        </p>
-      </div>
-    `,
+    type: HtmlButtonResponsePlugin,
     button_html: navButtons,
-    choices: ["Prev", "Next"],
-    on_finish: function (data) {
-      PageNav(data, trialIndex)
-    }
-      
+    choices: ['prev', 'next'], 
+    timeline: [
+      {stimulus: `
+        ${titleHtml}
+        <div id="instructions">
+          <p>
+            Imagine that a military leader is trying to eliminate people who have committed acts of terrorism. One way to do this is to order a drone strike on the target's location.
+          </p>
+          <p>
+            Unfortunately, the suspects are typically in locations with other people who are not suspected terrorists, and a drone strike would kill those people also.
+          </p>
+          <p>
+            You will evaluate a variety of scenarios; in each case, your task is to pick the best option (order the strike or decline to do so).
+          </p>
+        </div>
+      `},
+      {stimulus: `
+        ${titleHtml}
+        <div class="instruction-strike">
+          <div class="instruction-img-container">
+              <img src="assets/imgs/drone_attack.png" />
+          </div>
+          <p class="instruction-text">
+            This icon means that the best option is to order a drone strike.
+          </p>
+        </div>
+      `},
+      {stimulus: `
+      ${titleHtml}
+        <div class="instruction-no-strike">
+          <div class="instruction-img-container">
+              <img src="assets/imgs/no_drone.png" />
+          </div>
+          <p class="instruction-text">
+            This icon means that the best option is to NOT order a drone strike.
+          </p>
+        </div>
+      `}
+    ],
   })
 
-  // Strike Button 
-  timeline.push({
-    type: HtmlButtonResponsePlugin,
-    stimulus: `
-    ${titleHtml}
-    <div class="instruction-strike">
-      <div class="instruction-img-container">
-          <img src="assets/imgs/drone_attack.png" />
-      </div>
-      <p class="instruction-text">
-        This icon means that the best option is to order a drone strike.
-      </p>
-    </div>
-    `,
-    button_html: navButtons, 
-    choices: ["Prev", "Next"],
-    on_finish: function (data) {
-      PageNav(data, trialIndex)
-    }
-  })
-
-  // Don't Strike Button
-  timeline.push({
-    type: HtmlButtonResponsePlugin,
-    stimulus: `
-    ${titleHtml}
-    <div class="instruction-no-strike">
-      <div class="instruction-img-container">
-          <img src="assets/imgs/no_drone.png" />
-      </div>
-      <p class="instruction-text">
-        This icon means that the best option is to NOT order a drone strike.
-      </p>
-    </div>
-    `,
-    button_html: navButtons, 
-    choices: ["Prev", "Next"],
-    on_finish: function (data) {
-      PageNav(data, trialIndex)
-    }
-  })
+  
   
 
   /* GAME TRIALS */
@@ -378,7 +341,7 @@ export async function run({
     // Custom function to randomize the order of images
     sample: {
       type: "custom",
-      size: 7,
+      size: 20,
       fn: function (arr) {
         return randomizeStimuli(arr.length, this.size);
       },
