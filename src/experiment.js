@@ -35,16 +35,32 @@ const MAP_TYPES = [
 ]
 const SIZE = ["small", "medium-sized", "large"]
 
+
+
 /* GLOBAL FUNCTIONS */
 
-/**
- *
- * @param {int} min Minimum value for range (inclusive)
- * @param {int} max Maximum value for range (exclusive)
- * @returns Random integer value
- */
 function randomRange(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
+}
+
+function PageNav(data, trialIndex) {
+  if (data.button_pressed === 'Prev') {
+    trialIndex -= 1;
+    if (trialIndex < 0) {
+      trialIndex = 0;
+    }
+  } else {
+    trialIndex += 1;
+  }
+}
+
+function randomizeStimuli(range, repitions) {
+  const result = [];
+  for (let i = 0; i < repitions; i++) {
+    const num = randomRange(0, range);
+    result.push(num);
+  }
+  return result;
 }
 
 /**
@@ -59,9 +75,14 @@ export async function run({
   title,
   version,
 }) {
+
+  let trialIndex = 0
+
   // Initialize jsPsych variable
   const jsPsych = initJsPsych({
-    // display_element: "target-display",
+    on_trial_start: function () {
+      jsPsych.getCurrentTrial().timeline_index = trialIndex;
+    },
 
     // Function to be called when experiment finishes
     on_finish: async function () {
@@ -72,11 +93,7 @@ export async function run({
       jsPsych.data.displayData();
       const jsonData = jsPsych.data.get().json()
 
-      const headers = {
-        "Content-Type": "application/json"
-      }
-
-      await axios({ url: "http://localhost:3001/test", method: "PUT", data: jsonData, headers})
+      await axios({ url: "http://localhost:3001/test", method: "PUT", data: jsonData })
     },
   });
 
@@ -89,75 +106,14 @@ export async function run({
     images: assetPaths.images,
   });
 
-  // Environment Variables
-  let rand;
-  const env_vars = [
-    {
-      stimulus: `assets/maps/Big City A/BCA ${(rand = randomRange(
-        1,
-        11
-      ))}@4x.png`,
-      size: "large",
-      bystanders: rand - 1,
-    },
-    {
-      stimulus: `assets/maps/Big City B/BCB ${(rand = randomRange(
-        1,
-        11
-      ))}@4x.png`,
-      size: "large",
-      bystanders: rand - 1,
-    },
-    {
-      stimulus: `assets/maps/Small City A/SCA ${(rand = randomRange(
-        1,
-        11
-      ))}@4x.png`,
-      size: "small",
-      bystanders: rand - 1,
-    },
-    {
-      stimulus: `assets/maps/Small City B/SCB ${(rand = randomRange(
-        1,
-        11
-      ))}@4x.png`,
-      size: "small",
-      bystanders: rand - 1,
-    },
-    {
-      stimulus: `assets/maps/Medium-Sized A/Medium-Sized A ${(rand = randomRange(
-        1,
-        11
-      ))}@4x.png`,
-      size: "medium-sized",
-      bystanders: rand - 1,
-    },
-    {
-      stimulus: `assets/maps/Medium-Sized B/Medium-Sized B ${(rand = randomRange(
-        1,
-        11
-      ))}@4x.png`,
-      size: "medium-sized",
-      bystanders: rand - 1,
-    },
-  ];
-
   // HTML Variables
   const titleHtml = `<h1 id="title">TECHOMETER</h1>`;
-
-  // buttons for attack and don't-attack 
-  const gameButtons = [
-    '<button class="trialButton gameButton"><img src="assets/imgs/no_drone_small.png"></img></button>',
-    '<button class="trialButton gameButton"><img src="assets/imgs/drone_attack_small.png"></img></button>',
-  ];
-
+  
+  
+  
+  /* TERMS AND CONDITIONS */
   const consentButton = [`<button id="consentButton" class="trialButton"><p>I agree to participate in this study</p></button>`]
-  const navButtons = [
-    `<button id="prevButton" class="trialButton nav-button"><p>%choice%</p></button>`,
-    `<button id="nextButton" class="trialButton nav-button"><p>%choice%</p></button>`, 
-  ]
 
-  // Terms and Services
   timeline.push({
     type: HtmlButtonResponsePlugin,
     stimulus: `
@@ -235,7 +191,15 @@ export async function run({
     choices: ["agree"],
   });
 
-  // Intrustions 
+
+
+  /* INSTRUCTIONS */
+  const navButtons = [
+    `<button id="prevButton" class="trialButton nav-button"><p>%choice%</p></button>`,
+    `<button id="nextButton" class="trialButton nav-button"><p>%choice%</p></button>`, 
+  ]
+
+  // Instructions 
   timeline.push({
     type: HtmlButtonResponsePlugin, 
     stimulus: `
@@ -253,13 +217,18 @@ export async function run({
       </div>
     `,
     button_html: navButtons,
-    choices: ["Prev", "Next"]
+    choices: ["Prev", "Next"],
+    on_finish: function (data) {
+      PageNav(data, trialIndex)
+    }
+      
   })
 
   // Strike Button 
   timeline.push({
     type: HtmlButtonResponsePlugin,
     stimulus: `
+    ${titleHtml}
     <div class="instruction-strike">
       <div class="instruction-img-container">
           <img src="assets/imgs/drone_attack.png" />
@@ -270,13 +239,17 @@ export async function run({
     </div>
     `,
     button_html: navButtons, 
-    choices: ["Prev", "Next"]
+    choices: ["Prev", "Next"],
+    on_finish: function (data) {
+      PageNav(data, trialIndex)
+    }
   })
 
   // Don't Strike Button
   timeline.push({
     type: HtmlButtonResponsePlugin,
     stimulus: `
+    ${titleHtml}
     <div class="instruction-no-strike">
       <div class="instruction-img-container">
           <img src="assets/imgs/no_drone.png" />
@@ -287,9 +260,70 @@ export async function run({
     </div>
     `,
     button_html: navButtons, 
-    choices: ["Prev", "Next"]
+    choices: ["Prev", "Next"],
+    on_finish: function (data) {
+      PageNav(data, trialIndex)
+    }
   })
   
+
+  /* GAME TRIALS */
+  let rand;
+  const env_vars = [
+    {
+      stimulus: `assets/maps/Big City A/BCA ${(rand = randomRange(
+        1,
+        11
+      ))}@4x.png`,
+      size: "large",
+      bystanders: rand - 1,
+    },
+    {
+      stimulus: `assets/maps/Big City B/BCB ${(rand = randomRange(
+        1,
+        11
+      ))}@4x.png`,
+      size: "large",
+      bystanders: rand - 1,
+    },
+    {
+      stimulus: `assets/maps/Small City A/SCA ${(rand = randomRange(
+        1,
+        11
+      ))}@4x.png`,
+      size: "small",
+      bystanders: rand - 1,
+    },
+    {
+      stimulus: `assets/maps/Small City B/SCB ${(rand = randomRange(
+        1,
+        11
+      ))}@4x.png`,
+      size: "small",
+      bystanders: rand - 1,
+    },
+    {
+      stimulus: `assets/maps/Medium-Sized A/Medium-Sized A ${(rand = randomRange(
+        1,
+        11
+      ))}@4x.png`,
+      size: "medium-sized",
+      bystanders: rand - 1,
+    },
+    {
+      stimulus: `assets/maps/Medium-Sized B/Medium-Sized B ${(rand = randomRange(
+        1,
+        11
+      ))}@4x.png`,
+      size: "medium-sized",
+      bystanders: rand - 1,
+    },
+  ];
+  const gameButtons = [
+    '<button class="trialButton gameButton"><img src="assets/imgs/no_drone_small.png"></img></button>',
+    '<button class="trialButton gameButton"><img src="assets/imgs/drone_attack_small.png"></img></button>',
+  ];
+
   // Main Drone Trial
   let relation = undefined
   let region = undefined
@@ -346,31 +380,12 @@ export async function run({
       type: "custom",
       size: 7,
       fn: function (arr) {
-        console.log(env_vars)
         return randomizeStimuli(arr.length, this.size);
       },
     },
   });
 
-  /**
-   *
-   * @param {int} range Size of the stimuli array
-   * @param {int} repitions Number of times stimuli should be shown
-   * @returns Array containing order of indexes of stimuli
-   */
-  function randomizeStimuli(range, repitions) {
-    const result = [];
-    for (let i = 0; i < repitions; i++) {
-      const num = randomRange(0, range);
-      result.push(num);
-    }
-    return result;
-  }
 
   // Run experiment
   await jsPsych.run(timeline);
-
-  // Return the jsPsych instance so jsPsych Builder can access the experiment results (remove this
-  // if you handle results yourself, be it here or in `on_finish()`)
-  //return jsPsych.data.get().localSave('csv', 'Result.csv');
 }
