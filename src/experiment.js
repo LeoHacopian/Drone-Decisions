@@ -9,11 +9,11 @@
 // You can import stylesheets (.scss or .css).
 import "../styles/main.scss";
 
-import HtmlKeyboardResponsePlugin from "@jspsych/plugin-html-keyboard-response";
-import HtmlButtonResponse from "@jspsych/plugin-html-button-response";
-import PreloadPlugin from "@jspsych/plugin-preload";
 import { initJsPsych } from "jspsych";
+import PreloadPlugin from "@jspsych/plugin-preload";
 import HtmlButtonResponsePlugin from "@jspsych/plugin-html-button-response";
+import SurveyPlugin from '@jspsych/plugin-survey';
+import '@jspsych/plugin-survey/css/survey.css'
 import axios from "axios";
 
 // VARIABLES
@@ -184,48 +184,111 @@ export async function run({
   ]
 
   timeline.push({
-    type: HtmlButtonResponsePlugin,
-    button_html: navButtons,
-    choices: ['prev', 'next'], 
-    timeline: [
-      {stimulus: `
-        ${titleHtml}
-        <div id="instructions">
-          <p>
-            Imagine that a military leader is trying to eliminate people who have committed acts of terrorism. One way to do this is to order a drone strike on the target's location.
-          </p>
-          <p>
-            Unfortunately, the suspects are typically in locations with other people who are not suspected terrorists, and a drone strike would kill those people also.
-          </p>
-          <p>
-            You will evaluate a variety of scenarios; in each case, your task is to pick the best option (order the strike or decline to do so).
-          </p>
-        </div>
-      `},
-      {stimulus: `
-        ${titleHtml}
-        <div class="instruction-strike">
-          <div class="instruction-img-container">
-              <img src="assets/imgs/drone_attack.png" />
-          </div>
-          <p class="instruction-text">
-            This icon means that the best option is to order a drone strike.
-          </p>
-        </div>
-      `},
-      {stimulus: `
-      ${titleHtml}
-        <div class="instruction-no-strike">
-          <div class="instruction-img-container">
-              <img src="assets/imgs/no_drone.png" />
-          </div>
-          <p class="instruction-text">
-            This icon means that the best option is to NOT order a drone strike.
-          </p>
-        </div>
-      `}
+    type: SurveyPlugin,
+    pages: [
+      [
+        {
+          type: 'html',
+          prompt: `
+            ${titleHtml}
+            <div id="instructions">
+              <p>
+                Imagine that a military leader is trying to eliminate people who have committed acts of terrorism. One way to do this is to order a drone strike on the target's location.
+              </p>
+              <p>
+                Unfortunately, the suspects are typically in locations with other people who are not suspected terrorists, and a drone strike would kill those people also.
+              </p>
+              <p>
+                You will evaluate a variety of scenarios; in each case, your task is to pick the best option (order the strike or decline to do so).
+              </p>
+            </div>
+          `,
+        }
+      ],
+      [
+        {
+          type: 'html',
+          prompt: `
+            ${titleHtml}
+            <div class="instruction-strike">
+              <div class="instruction-img-container">
+                  <img src="assets/imgs/drone_attack.png" />
+              </div>
+              <p class="instruction-text">
+                This icon means that the best option is to order a drone strike.
+              </p>
+            </div>
+          `
+        }
+      ],
+      [
+        {
+          type: 'html',
+          prompt: `
+            ${titleHtml}
+            <div class="instruction-no-strike">
+              <div class="instruction-img-container">
+                  <img src="assets/imgs/no_drone.png" />
+              </div>
+              <p class="instruction-text">
+                This icon means that the best option is to NOT order a drone strike.
+              </p>
+            </div>
+          `
+        }
+      ]
     ],
+    button_label_next: 'Next',
+    button_label_back: 'Previous',
+    button_label_finish: 'Next',
   })
+
+
+  // timeline.push({
+  //   type: HtmlButtonResponsePlugin,
+  //   button_html: navButtons,
+  //   choices: ['prev', 'next'], 
+  //   timeline: [
+  //     {stimulus: `
+  //       ${titleHtml}
+  //       <div id="instructions">
+  //         <p>
+  //           Imagine that a military leader is trying to eliminate people who have committed acts of terrorism. One way to do this is to order a drone strike on the target's location.
+  //         </p>
+  //         <p>
+  //           Unfortunately, the suspects are typically in locations with other people who are not suspected terrorists, and a drone strike would kill those people also.
+  //         </p>
+  //         <p>
+  //           You will evaluate a variety of scenarios; in each case, your task is to pick the best option (order the strike or decline to do so).
+  //         </p>
+  //       </div>
+  //     `},
+  //     {stimulus: `
+  //       ${titleHtml}
+  //       <div class="instruction-strike">
+  //         <div class="instruction-img-container">
+  //             <img src="assets/imgs/drone_attack.png" />
+  //         </div>
+  //         <p class="instruction-text">
+  //           This icon means that the best option is to order a drone strike.
+  //         </p>
+  //       </div>
+  //     `},
+  //     {stimulus: `
+  //     ${titleHtml}
+  //       <div class="instruction-no-strike">
+  //         <div class="instruction-img-container">
+  //             <img src="assets/imgs/no_drone.png" />
+  //         </div>
+  //         <p class="instruction-text">
+  //           This icon means that the best option is to NOT order a drone strike.
+  //         </p>
+  //       </div>
+  //     `}
+  //   ],
+  // })
+
+
 
   
   

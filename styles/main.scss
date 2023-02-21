@@ -2,6 +2,7 @@
 
 :root {
   --borderRadius: 8px;
+  --buttonColor: rgb(240, 240, 240);
 }
 
 .jspsych-content-wrapper {
@@ -30,7 +31,7 @@
 .trialButton {
   border-radius: var(--borderRadius);
   border: 0px;
-  background-color: rgb(240, 240, 240);
+  background-color: var(--buttonColor);
 }
 
 .trialButton:hover {
@@ -66,13 +67,22 @@
   background-color: rgb(240, 112, 20);
 }
 
-.nav-button p {
+#sv-nav-next input,
+#sv-nav-prev input,
+#sv-nav-complete input
+{
+  padding: 10px 30px;
   display: block;
-  padding: 0px 50px;
-  font-size: 16px;
+  color: black;
+  font-weight: 400;
+  border-radius: var(--borderRadius);
+  background-color: var(--buttonColor);
 }
 
-.nav-button:active {
+#sv-nav-next input:active,
+#sv-nav-prev input:active,
+#sv-nav-complete input:active 
+{
   background-color: rgb(240, 112, 20);
 }
 
@@ -87,8 +97,10 @@
 }
 
 #title {
-  margin: 0px 63px 50px;
+  // margin: 0px 63px 50px;
+  margin: 0px 0px 50px;
   padding: 20px 0px;
+  text-align: center;
 
   display: block;
   border-radius: 5px;
