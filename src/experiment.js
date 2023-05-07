@@ -75,9 +75,31 @@ export async function run({
       data.trials.shift()
 
       jsPsych.data.displayData();
-      const jsonData = jsPsych.data.get().json()
+      //get gameData
+      const gameData = jsPsych.data.get().trials
 
-      await axios({ url: "http://localhost:3001/test", method: "PUT", data: jsonData })
+      //seperate gameData into metaData and actuals results
+      const metaData = gameData[0]
+      const results = gameData.slice(1)
+
+      //log metaData and results
+      console.log("metaData", JSON.stringify(metaData, null, 2));
+      console.log("results", JSON.stringify(results, null, 2));
+
+      //dummy game_id and user_id
+      const game_id = 1;
+      const user_id = 1;
+
+      //format game_id, user_id, and results into same as mongoose Schema
+      const gameResult = {
+        game_id,
+        user_id,
+        results
+      };
+      //log full gameResult
+      console.log("gameResult", gameResult);
+      //save to database
+      await axios.post("http://localhost:3005/gameResult/saveResult", gameResult)
     },
   });
 
